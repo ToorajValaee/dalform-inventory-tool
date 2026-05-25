@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/dalform-inventory-tool.slnx/FileContentIndex
+/.vs
+/.vs/dalform-inventory-tool.slnx/v18/TestStore/0/000.testlog
+/bin/Debug/net10.0
+/obj
