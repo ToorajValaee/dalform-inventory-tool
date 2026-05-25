@@ -1,0 +1,115 @@
+@page
+@model InventoryTool.Pages.Employee.ReportModel
+@using InventoryTool.Services
+@using InventoryTool.Models
+@{
+    ViewData["Title"] = "گزارش";
+}
+
+@if (Model.ReportStatus == InventoryReportStatus.Exported)
+{
+    <div class="app-card empty-state">
+        <i class="bi bi-lock"></i>
+        <p>گزارش تا این لحظه، بدلیل تایید مدیر، قفل شده‌اند.</p>
+    </div>
+}
+else
+{
+    <div class="app-card mb-3">
+        <form method="post" asp-page-handler="AddLine">
+            <div class="mb-3">
+                <label class="form-label">کالا</label>
+                <select asp-for="Input.ProductId" class="form-select">
+                    <option value="">انتخاب کالا</option>
+                    @foreach (var p in Model.Products)
+                    {
+                        <option value="@p.Id">@p.Code - @p.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Input.ProductId" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">نوع</label>
+                <select asp-for="Input.Direction" class="form-select">
+                    <option value="@InventoryDirection.In">ورود</option>
+                    <option value="@InventoryDirection.Out">خروج</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">تعداد</label>
+                <input asp-for="Input.Quantity" class="form-control" inputmode="decimal" />
+                <span asp-validation-for="Input.Quantity" class="text-danger small"></span>
+            </div>
+
+            <button class="primary-btn" type="submit">افزودن کالا</button>
+        </form>
+    </div>
+}
+
+<div class="hero-card">
+    <h1>امروز</h1>
+    <p>@PersianDateService.ToPersianDate(Model.ReportDate)</p>
+
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="stat-value">@Model.Lines.Count</div>
+            <div class="stat-label">آیتم</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">@Model.ReportStatus</div>
+            <div class="stat-label">وضعیت</div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Lines.Any())
+{
+    <div class="app-card empty-state">
+        <i class="bi bi-basket"></i>
+        <p>هنوز کالایی ثبت نشده.</p>
+    </div>
+}
+else
+{
+    <div class="list-stack">
+        @foreach (var line in Model.Lines)
+        {
+            <div class="soft-card">
+                <div class="soft-card-icon">
+                    <i class="bi @(line.Direction == InventoryDirection.In ? "bi-arrow-down-circle" : "bi-arrow-up-circle")"></i>
+                </div>
+
+                <div style="flex:1">
+                    <div class="soft-card-title">@line.Product.Code</div>
+                    <div class="soft-card-subtitle">@line.Product.Name</div>
+                    <div class="mt-3">
+                        <span class="badge-pill">@line.Direction</span>
+                        <span class="badge-pill">@line.Quantity</span>
+                    </div>
+                </div>
+
+                @if (Model.ReportStatus != InventoryReportStatus.Exported)
+                {
+                    <form method="post" asp-page-handler="DeleteLine" asp-route-lineId="@line.Id">
+                        <button class="icon-btn" type="submit">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    </div>
+
+    @if (Model.ReportStatus != InventoryReportStatus.Exported)
+    {
+        <form method="post" asp-page-handler="Submit" class="mt-3">
+            <button class="primary-btn" type="submit">ارسال به مدیر</button>
+        </form>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

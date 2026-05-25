@@ -1,0 +1,67 @@
+@page
+@model InventoryTool.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "مدیر";
+}
+
+<div class="hero-card" asp-page="/Admin/Reports/Index">
+    <h1>مدیریت</h1>
+    <p>مدیریت کالاها، کاربران و گزارشات روزانه.</p>
+
+    <div class="stat-row">
+
+        <a class="stat-card hero-link" asp-page="/Admin/Products/Index">
+            <div class="stat-value">📦</div>
+            <div class="stat-label">کالاها</div>
+        </a>
+        <a class="stat-card hero-link" asp-page="/Admin/Reports/Index">
+            <div class="stat-value">📊</div>
+            <div class="stat-label">گزارشات</div>
+        </a>
+    </div>
+</div>
+
+<div class="list-stack">
+    <a class="soft-card" asp-page="/Admin/Products/Index">
+        <div class="soft-card-icon"><i class="bi bi-box-seam"></i></div>
+        <div>
+            <div class="soft-card-title">کالاها</div>
+            <div class="soft-card-subtitle">مدیریت کالاها</div>
+        </div>
+    </a>
+
+    <a class="soft-card" asp-page="/Admin/Users/Index">
+        <div class="soft-card-icon"><i class="bi bi-people"></i></div>
+        <div>
+            <div class="soft-card-title">کاربران</div>
+            <div class="soft-card-subtitle">مدیریت کاربران</div>
+        </div>
+    </a>
+
+    <a class="soft-card" asp-page="/Admin/Reports/Index">
+        <div class="soft-card-icon"><i class="bi bi-clipboard-data"></i></div>
+        <div>
+            <div class="soft-card-title">گزارشات</div>
+            <div class="soft-card-subtitle">مرور گزارشات روزانه</div>
+        </div>
+    </a>
+
+    <form method="post"
+          asp-page="/Admin/Reports/Index"
+          asp-page-handler="ExportAccounting"
+          class="m-0">
+
+        <button type="submit" class="soft-card soft-card-button">
+            <div class="soft-card-icon">
+                <i class="bi bi-file-earmark-excel"></i>
+            </div>
+
+            <div>
+                <div class="soft-card-title">استخراج اکسل</div>
+                <div class="soft-card-subtitle">
+                    دانلود اکسل و قفل گزارشات
+                </div>
+            </div>
+        </button>
+    </form>
+</div>

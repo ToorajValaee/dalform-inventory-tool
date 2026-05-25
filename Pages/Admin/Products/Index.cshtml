@@ -1,0 +1,39 @@
+@page
+@model InventoryTool.Pages.Admin.Products.IndexModel
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">کالاها</h1>
+        <p class="text-muted mb-0">مدیریت کالاها.</p>
+    </div>
+
+    <a asp-page="Create" class="app-btn text-decoration-none">Add</a>
+</div>
+
+@if (!Model.Products.Any())
+{
+    <div class="app-card text-center">
+        <p class="text-muted mb-0">کالایی موجود نیست.</p>
+    </div>
+}
+else
+{
+    <div class="d-grid gap-3">
+        @foreach (var item in Model.Products)
+        {
+            <div class="app-card">
+                <div class="d-flex justify-content-between gap-3">
+                    <div>
+                        <div class="fw-bold">@item.Code</div>
+                        <div>@item.Name</div>
+                        <div class="small text-muted">
+                            @(item.IsActive ? "فعال" : "غیرفعال")
+                        </div>
+                    </div>
+
+                    <a asp-page="Edit" asp-route-id="@item.Id" class="app-btn-outline">ویرایش</a>
+                </div>
+            </div>
+        }
+    </div>
+}

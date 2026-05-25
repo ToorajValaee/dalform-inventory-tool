@@ -1,0 +1,36 @@
+@page
+@model InventoryTool.Pages.Admin.Users.CreateModel
+@{
+    ViewData["Title"] = "کاربر جدید";
+}
+
+<div class="app-card">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">نام کامل</label>
+            <input asp-for="Input.FullName" class="form-control" />
+            <span asp-validation-for="Input.FullName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">نام کاربری</label>
+            <input asp-for="Input.Username" class="form-control" autocomplete="off" />
+            <span asp-validation-for="Input.Username" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">رمز عبور</label>
+            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button class="primary-btn" type="submit">ثبت کاربر</button>
+            <a asp-page="Index" class="secondary-btn">انصراف</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

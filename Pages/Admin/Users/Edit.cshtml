@@ -1,0 +1,45 @@
+@page "{id}"
+@model InventoryTool.Pages.Admin.Users.EditModel
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+}
+
+<div class="app-card mb-3">
+    <form method="post">
+        <input type="hidden" asp-for="Input.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">نام کامل</label>
+            <input asp-for="Input.FullName" class="form-control" />
+            <span asp-validation-for="Input.FullName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">نام کاربری</label>
+            <input asp-for="Input.Username" class="form-control" readonly />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">رمز عبور جدید</label>
+            <input asp-for="Input.NewPassword" type="password" class="form-control" placeholder="Leave empty to keep old password" />
+            <span asp-validation-for="Input.NewPassword" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">وضعیت</label>
+            <select asp-for="Input.IsActive" class="form-select">
+                <option value="true">فعال</option>
+                <option value="false">غیر‌فعال</option>
+            </select>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button class="primary-btn" type="submit">ثبت تغییرات</button>
+            <a asp-page="Index" class="secondary-btn">برگشت</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

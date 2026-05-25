@@ -1,0 +1,65 @@
+@page
+@model InventoryTool.Pages.Employee.IndexModel
+@{
+    ViewData["Title"] = "گزارش‌ها من";
+}
+
+<div class="hero-card">
+    <h1>گزارش من</h1>
+    <p>گزارش‌هایی که توسط مدیر تایید نشده اند.</p>
+
+    <div class="stat-row">
+
+        <a class="stat-card action-card"
+           asp-page="/Employee/Report">
+            <div class="stat-value">+</div>
+            <div class="stat-label">ثبت کالا</div>
+        </a>
+
+        <form method="post"
+              asp-page-handler="SubmitToday"
+              class="m-0">
+
+            <button class="stat-card action-card border-0 w-100"
+                    type="submit"
+                    disabled="@(!Model.HasDraftReport)">
+
+                <div class="stat-value">@Model.TodayItemCount</div>
+
+                <div class="stat-label">
+                    @(Model.HasDraftReport ? "ارسال برای مدیر" : "آیتمی برای ارسال نیست")
+                </div>
+
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<div class="list-stack">
+    <a class="soft-card" asp-page="/Employee/Report">
+        <div class="soft-card-icon">
+            <i class="bi bi-plus-circle"></i>
+        </div>
+
+        <div>
+            <div class="soft-card-title">گزارش من</div>
+            <div class="soft-card-subtitle">
+                مدیریت کالاهای
+            </div>
+        </div>
+    </a>
+
+    <a class="soft-card" asp-page="/Employee/Summary">
+        <div class="soft-card-icon">
+            <i class="bi bi-clock-history"></i>
+        </div>
+
+        <div>
+            <div class="soft-card-title">خلاصه گزارش</div>
+            <div class="soft-card-subtitle">
+                تاریخچه گزارشات من
+            </div>
+        </div>
+    </a>
+</div>

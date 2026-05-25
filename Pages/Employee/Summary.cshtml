@@ -1,0 +1,38 @@
+@page
+@model InventoryTool.Pages.Employee.SummaryModel
+@using InventoryTool.Services
+@{
+    ViewData["Title"] = "تاریخچه";
+}
+
+@if (!Model.Reports.Any())
+{
+    <div class="app-card empty-state">
+        <i class="bi bi-clock-history"></i>
+        <p>گزارشی وجود نداید.</p>
+    </div>
+}
+else
+{
+    <div class="list-stack">
+        @foreach (var report in Model.Reports)
+        {
+            <div class="app-card">
+                <div class="soft-card-title">@PersianDateService.ToPersianDate(report.ReportDate)</div>
+                <div class="soft-card-subtitle">@report.Status - @report.Lines.Count items</div>
+
+                <div class="list-stack mt-3">
+                    @foreach (var line in report.Lines)
+                    {
+                        <div>
+                            <strong>@line.Product.Code</strong>
+                            <div class="small text-muted">
+                                @line.Product.Name | @line.Direction | @line.Quantity
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

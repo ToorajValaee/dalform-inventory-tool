@@ -1,0 +1,130 @@
+@page
+@model InventoryTool.Pages.Admin.Reports.IndexModel
+@using InventoryTool.Services
+@using InventoryTool.Models
+@{
+    ViewData["Title"] = "گزارش‌ها";
+}
+
+<div class="d-grid gap-2 mb-3">
+    <form method="post" asp-page-handler="ExportAccounting">
+        <button class="primary-btn" type="submit">
+            <i class="bi bi-file-earmark-excel"></i>
+            دانلود گزارش انبارداری
+        </button>
+    </form>
+</div>
+
+<div class="app-card mb-3">
+    <form method="get">
+        <div class="mb-3">
+            <label class="form-label">از تاریخ</label>
+            <input asp-for="FromDateText"
+                   class="form-control persian-date-picker"
+                   placeholder="انتخاب تاریخ"
+                   autocomplete="off"
+                   dir="ltr" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">تا تاریخ</label>
+            <input asp-for="ToDateText"
+                   class="form-control persian-date-picker"
+                   placeholder="انتخاب تاریخ"
+                   autocomplete="off"
+                   dir="ltr" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">کاربر</label>
+            <select asp-for="EmployeeId" class="form-select">
+                <option value="">همه کاربران</option>
+                @foreach (var e in Model.Employees)
+                {
+                    <option value="@e.Id">@e.FullName (@e.UserName)</option>
+                }
+            </select>
+        </div>
+
+        <button class="primary-btn" type="submit">فیلتر</button>
+    </form>
+</div>
+
+<div class="d-grid gap-2 mb-3">
+    <form method="post" asp-page-handler="Export">
+        <input type="hidden" name="FromDateText" value="@Model.FromDateText" />
+        <input type="hidden" name="ToDateText" value="@Model.ToDateText" />
+        <input type="hidden" name="EmployeeId" value="@Model.EmployeeId" />
+
+        <button class="secondary-btn" type="submit">
+            <i class="bi bi-file-earmark-excel"></i>
+            دانلود اکسل گزارش
+        </button>
+    </form>
+</div>
+
+
+
+@if (!Model.Reports.Any())
+{
+    <div class="app-card empty-state">
+        <i class="bi bi-clipboard-x"></i>
+        <p>No reports found.</p>
+    </div>
+}
+else
+{
+    <div class="list-stack">
+        @foreach (var report in Model.Reports)
+        {
+            <div class="app-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <div class="soft-card-title">@report.Employee.FullName</div>
+                        <div class="soft-card-subtitle">@PersianDateService.ToPersianDate(report.ReportDate)</div>
+                    </div>
+
+                    <span class="badge-pill">@report.Status</span>
+                </div>
+
+                <div class="list-stack">
+                    @foreach (var line in report.Lines)
+                    {
+                        <div class="soft-card" style="box-shadow:none;">
+                            <div class="soft-card-icon">
+                                <i class="bi @(line.Direction == InventoryDirection.In ? "bi-arrow-down-circle" : "bi-arrow-up-circle")"></i>
+                            </div>
+
+                            <div>
+                                <div class="soft-card-title">@line.Product.Code</div>
+                                <div class="soft-card-subtitle">@line.Product.Name</div>
+                                <div class="mt-3">
+                                    <span class="badge-pill">@line.Direction</span>
+                                    <span class="badge-pill">@line.Quantity</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".persian-date-picker").pDatepicker({
+                format: "YYYY/MM/DD",
+                initialValue: false,
+                autoClose: true,
+                responsive: true,
+                calendar: {
+                    persian: {
+                        locale: "fa"
+                    }
+                }
+            });
+        });
+    </script>
+}

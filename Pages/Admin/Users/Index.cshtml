@@ -1,0 +1,42 @@
+@page
+@model InventoryTool.Pages.Admin.Users.IndexModel
+@{
+    ViewData["Title"] = "کاربران";
+}
+
+<div class="d-grid gap-3 mb-4">
+    <a asp-page="Create" class="primary-btn">+ افزودن کاربر</a>
+</div>
+
+@if (!Model.Employees.Any())
+{
+    <div class="app-card empty-state">
+        <i class="bi bi-people"></i>
+        <p>کاربری وجود ندارد.</p>
+    </div>
+}
+else
+{
+    <div class="list-stack">
+        @foreach (var item in Model.Employees)
+        {
+            <div class="soft-card">
+                <div class="soft-card-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <div style="flex:1">
+                    <div class="soft-card-title">@item.FullName</div>
+                    <div class="soft-card-subtitle">@item.UserName</div>
+                    <div class="mt-3">
+                        <span class="badge-pill">@(item.IsActive ? "فعال" : "غیر‌فعال")</span>
+                    </div>
+                </div>
+
+                <a asp-page="Edit" asp-route-id="@item.Id" class="icon-btn">
+                    <i class="bi bi-pencil"></i>
+                </a>
+            </div>
+        }
+    </div>
+}
